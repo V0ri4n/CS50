@@ -16,6 +16,16 @@ const uncheckedCountSpan = document.getElementById('unchecked-count')
 // Must track total number of unchecked TODOs
 // Must be able to delete TODOs
 
+TOMORROW = Let's forget this and try to make a class for TODOs
+
+
+
+
+
+
+
+
+
 let totalCount= 0
 let uncheckedCount= 0
 let id=""
