@@ -15,20 +15,10 @@ const uncheckedCountSpan = document.getElementById('unchecked-count')
 // Must track total number of TODOs
 // Must track total number of unchecked TODOs
 // Must be able to delete TODOs
-
-TOMORROW = Let's forget this and try to make a class for TODOs
-
-
-
-
-
-
-
-
-
 let totalCount= 0
 let uncheckedCount= 0
 let id=""
+
 
 function updateTotal(updateValue){
   totalCount=totalCount + updateValue
@@ -40,47 +30,57 @@ function updateUnchecked(updateValue){
   uncheckedCountSpan.innerHTML= uncheckedCount
 }
 
-function formatTodo(name){
-  const checkbox = document.createElement("input")
-  checkbox.className= classNames.TODO_CHECKBOX
-  checkbox.type= "checkbox"
-  checkbox.onchange= toggle
-
-  const button = document.createElement("button")
-  button.ClassName= classNames.TODO_BUTTON
-  button.type= "button"
-  button.onclick= delete_todo(`${name}`)
-  button.value= "Delete"
-
-  const span = document.createElement("span")
-  span.className= classNames.TODO_TEXT
-  span.setAttribute("contenteditable","true")
-  span.innerHTML= name
-
-  const li = document.createElement("li")
-  li.className= classNames.TODO_ITEM
-  li.id= "li_"+name
-  li.appendChild(checkbox)
-  li.appendChild(span)
-  li.appendChild(button)
-
-  return li
-}
-
-function delete_todo(id){
-  let del=document.getElementById(`li_${id}`)
-  console.log(del)
-}
-
 function newTodo(){
-  let name=prompt("name?")
+  let name=prompt("What do you have to do?")
   const todo = formatTodo(name)
   list.appendChild(todo)
   updateTotal(1)
   updateUnchecked(1)
 }
 
+function formatTodo(name){
+  const checkbox = document.createElement("input")
+  checkbox.className= classNames.TODO_CHECKBOX
+  checkbox.type= "checkbox"
+  checkbox.id=`check_${name}`
+  checkbox.onchange= toggle
+
+//  const button = document.createElement("input")
+//  button.ClassName= classNames.TODO_BUTTON
+//  button.type= "button"
+//  button.style= "position: absolute right: 0px"
+//  button.onClick= delete_todo(`${name}`)
+//  button.value= "Delete"
+
+  const span = document.createElement("span")
+  span.className= classNames.TODO_TEXT
+  span.innerHTML= name
+
+  const span_button = document.createElement("span")
+  span_button.className= classNames.TODO_BUTTON
+  span_button.innerHTML= `<input type="button" style="vertical-align:middle; float:right; line-height: 28px"  value="delete" />`
+
+  const li = document.createElement("li")
+  span_button.addEventListener('click', function() {
+    delete_todo(name)
+  })
+  li.className= classNames.TODO_ITEM
+  li.id= "li_"+name
+  li.appendChild(checkbox)
+  li.appendChild(span)
+  li.appendChild(span_button)
+
+  return li
+}
+
 function toggle() {
   if (this.checked) updateUnchecked(-1)
   else updateUnchecked(1)
+}
+
+function delete_todo(id){
+  let del=document.getElementById(`li_${id}`)
+  updateTotal(-1)
+  if (!document.getElementById(`check_${id}`).checked) updateUnchecked(-1)
+  del.parentNode.removeChild(del)
 }
